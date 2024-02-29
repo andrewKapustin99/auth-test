@@ -1,0 +1,1 @@
+cmd_Release/obj.target/getPublickKey.node := g++ -o Release/obj.target/getPublickKey.node -shared -pthread -rdynamic -m64  -Wl,-soname=getPublickKey.node -Wl,--start-group Release/obj.target/getPublickKey/getPublickKey.o -Wl,--end-group -loqs

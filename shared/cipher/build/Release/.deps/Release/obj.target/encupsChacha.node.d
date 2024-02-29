@@ -1,0 +1,1 @@
+cmd_Release/obj.target/encupsChacha.node := g++ -o Release/obj.target/encupsChacha.node -shared -pthread -rdynamic -m64  -Wl,-soname=encupsChacha.node -Wl,--start-group Release/obj.target/encupsChacha/euncupsChacha.o -Wl,--end-group -loqs -lwolfssl

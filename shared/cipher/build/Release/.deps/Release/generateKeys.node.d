@@ -1,0 +1,1 @@
+cmd_Release/generateKeys.node := ln -f "Release/obj.target/generateKeys.node" "Release/generateKeys.node" 2>/dev/null || (rm -rf "Release/generateKeys.node" && cp -af "Release/obj.target/generateKeys.node" "Release/generateKeys.node")

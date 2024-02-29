@@ -1,0 +1,1 @@
+cmd_Release/obj.target/decupsSC.node := g++ -o Release/obj.target/decupsSC.node -shared -pthread -rdynamic -m64  -Wl,-soname=decupsSC.node -Wl,--start-group Release/obj.target/decupsSC/decupsSC.o -Wl,--end-group -loqs

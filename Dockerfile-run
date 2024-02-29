@@ -1,0 +1,50 @@
+# Этап 1: Сборка и компиляция в полной версии Node.js UBI
+FROM registry.access.redhat.com/ubi8/nodejs-16:latest AS builder
+
+# Переключение на пользователя root для установки зависимостей
+USER root
+
+# Установка зависимостей для сборки
+RUN yum install -y --allowerasing gcc-c++ make git autoconf automake libtool kernel-headers coreutils glibc-devel
+
+
+# Клонирование и установка wolfSSL
+RUN git clone https://github.com/wolfSSL/wolfssl.git     \
+    && cd wolfssl                                        \
+    && ./autogen.sh                                      \
+    && ./configure                                       \
+    && make                                              \
+    && make install
+
+# Создание символической ссылки для libwolfssl.so
+RUN ln -s /usr/local/lib/libwolfssl.so /usr/local/lib/libwolfssl.so.32
+
+# Копирование файлов проекта и установка зависимостей Node.js
+WORKDIR /opt/app-root/src
+COPY package*.json ./
+RUN npm ci
+
+# Копирование остальных файлов проекта
+COPY . .
+
+# Этап 2: Перенос в облегчённый образ Node.js UBI
+FROM registry.access.redhat.com/ubi8/nodejs-16-minimal:latest
+
+# Копирование node_modules и сборки wolfSSL
+COPY --from=builder /usr/local/lib/libwolfssl* /usr/local/lib/
+COPY --from=builder /opt/app-root/src /opt/app-root/src
+
+# Создание символической ссылки и настройка ldconfig для облегчённого образа
+RUN ln -s /usr/local/lib/libwolfssl.so /usr/local/lib/libwolfssl.so.32     \
+    && echo "/usr/local/lib" > /etc/ld.so.conf.d/local.conf                 \
+    && ldconfig || echo "ldconfig not available, skipping"
+
+WORKDIR /opt/app-root/src
+
+ENV NODE_ENV production
+ENV PORT 3001
+
+EXPOSE 3001
+CMD ["npm", "start"]
+
+#auth-microserv-run

@@ -1,0 +1,1 @@
+cmd_Release/decupsChacha.node := ln -f "Release/obj.target/decupsChacha.node" "Release/decupsChacha.node" 2>/dev/null || (rm -rf "Release/decupsChacha.node" && cp -af "Release/obj.target/decupsChacha.node" "Release/decupsChacha.node")

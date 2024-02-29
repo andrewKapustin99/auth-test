@@ -1,0 +1,1 @@
+cmd_Release/getPublickKey.node := ln -f "Release/obj.target/getPublickKey.node" "Release/getPublickKey.node" 2>/dev/null || (rm -rf "Release/getPublickKey.node" && cp -af "Release/obj.target/getPublickKey.node" "Release/getPublickKey.node")

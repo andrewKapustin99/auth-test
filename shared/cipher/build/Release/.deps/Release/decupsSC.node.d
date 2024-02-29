@@ -1,0 +1,1 @@
+cmd_Release/decupsSC.node := ln -f "Release/obj.target/decupsSC.node" "Release/decupsSC.node" 2>/dev/null || (rm -rf "Release/decupsSC.node" && cp -af "Release/obj.target/decupsSC.node" "Release/decupsSC.node")
